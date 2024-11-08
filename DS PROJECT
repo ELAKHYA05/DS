@@ -1,0 +1,41 @@
+#include <stdio.h>
+        }
+    } while (choice != 3);
+
+    return 0;
+}
+
+// Initialize the traffic signals with default values
+void initializeSignals(TrafficSignal signals[], int count) {
+    for (int i = 0; i < count; i++) {
+        printf("Enter name for traffic signal %d: ", i + 1);
+        fgets(signals[i].name, 20, stdin);
+        signals[i].name[strcspn(signals[i].name, "\n")] = 0; // Remove newline character
+        signals[i].state = RED; // Default state is RED
+    }
+}
+
+// Display the current state of all traffic signals
+void displaySignals(const TrafficSignal signals[], int count) {
+    printf("\nCurrent Traffic Signal States:\n");
+    for (int i = 0; i < count; i++) {
+        printf("%s: %s\n", signals[i].name, stateNames[signals[i].state]);
+    }
+}
+
+// Change the state of a specific traffic signal
+void changeSignalState(TrafficSignal signals[], int count, const char* name, SignalState newState) {
+    for (int i = 0; i < count; i++) {
+        if (strcmp(signals[i].name, name) == 0) {
+            signals[i].state = newState;
+            printf("Changed state of %s to %s.\n", name, stateNames[newState]);
+            return;
+        }
+    }
+    printf("Traffic signal %s not found.\n", name);
+}
+
+// Get the next state in the cycle (Red -> Yellow -> Green -> Red)
+SignalState getNextState(SignalState currentState) {
+    return (currentState + 1) % 3; // Cycles through RED, YELLOW, GREEN
+}
